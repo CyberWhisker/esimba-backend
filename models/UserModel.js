@@ -9,18 +9,29 @@ const UserSchema = new Schema({
         required: true,
         unique: true
     },
-    name : {
-        type: String
+    firstName : {
+        type: String,
+        required: true
+    },
+    lastName : {
+        type: String,
+        required: true
+    },
+    middleName : {
+        type: String,
+        required: true
+    },
+    address : {
+        type: String,
+        required: true
+    },
+    phone : {
+        type: Number,
+        required: true
     },
     image : {
         type: String
     },
-    year : {
-        type: String
-    },
-    section : {
-        type: String
-    }, 
     role : {
         type: String
     }, 
@@ -30,7 +41,7 @@ const UserSchema = new Schema({
     },
 }, { timestamps: true})
 
-UserSchema.statics.registerHash = async function(email, password, name, section, year) {
+UserSchema.statics.registerHash = async function(email, firstName, lastName, middleName, address, phone, password) {
     const exists = await this.findOne({email})
 
     if (exists) {
@@ -42,9 +53,11 @@ UserSchema.statics.registerHash = async function(email, password, name, section,
 
     const user = await this.create({
         email,
-        name,
-        section,
-        year,
+        firstName,
+        lastName,
+        address,
+        phone,
+        middleName,
         role: 'user',
         password: hash
     })
