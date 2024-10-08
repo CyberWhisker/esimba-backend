@@ -48,11 +48,11 @@ const login = async (req, res) => {
 }
 
 const register = async (req, res) => {
-    const {email, firstName, lastName, middleName, address, phone, password} = req.body
+    const {email, firstName, lastName, middleName, address, phone, password, role, subcription} = req.body
     try {
-        const user = await Model.registerHash(email, firstName, lastName, middleName, address, phone, password)
+        const user = await Model.registerHash(email, firstName, lastName, middleName, address, phone, password, role, subcription)
         const token = createToken(user._id)
-        res.status(200).json({token, user: {_id: user._id, email: user.email, firstName: user.firstName, lastName: user.lastName, role: user.role}})
+        res.status(200).json({token, user: {_id: user._id, email: user.email, firstName: user.firstName, lastName: user.lastName, role: user.role, subcription: user.subcription}})
     } catch (error) {
         res.status(400).json({error: error.message})
     }

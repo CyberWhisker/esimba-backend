@@ -33,7 +33,10 @@ const UserSchema = new Schema({
         type: String
     },
     role : {
-        type: String
+        type: Number
+    }, 
+    subcription : {
+        type: Number
     }, 
     password: {
         type: String,
@@ -41,13 +44,13 @@ const UserSchema = new Schema({
     },
 }, { timestamps: true})
 
-UserSchema.statics.registerHash = async function(email, firstName, lastName, middleName, address, phone, password) {
+UserSchema.statics.registerHash = async function(email, firstName, lastName, middleName, address, phone, password, role, subcription) {
     const exists = await this.findOne({email})
 
     if (exists) {
         throw Error('Email already in use')
     }
-
+    
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
 
@@ -58,7 +61,8 @@ UserSchema.statics.registerHash = async function(email, firstName, lastName, mid
         address,
         phone,
         middleName,
-        role: 'user',
+        role,
+        subcription,
         password: hash
     })
 
