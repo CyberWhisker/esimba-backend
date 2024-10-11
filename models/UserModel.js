@@ -35,16 +35,13 @@ const UserSchema = new Schema({
     role : {
         type: Number
     }, 
-    subcription : {
-        type: Number
-    }, 
     password: {
         type: String,
         required: true
     },
-}, { timestamps: true})
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
-UserSchema.statics.registerHash = async function(email, firstName, lastName, middleName, address, phone, password, role, subcription) {
+UserSchema.statics.registerHash = async function(email, firstName, lastName, middleName, address, phone, password, role) {
     const exists = await this.findOne({email})
 
     if (exists) {
@@ -62,7 +59,6 @@ UserSchema.statics.registerHash = async function(email, firstName, lastName, mid
         phone,
         middleName,
         role,
-        subcription,
         password: hash
     })
 
@@ -84,5 +80,12 @@ UserSchema.statics.loginHash = async function(email, password) {
 
     return user
 }
+
+// Virtual field
+UserSchema.virtual('chapel', {
+    ref: 'Chapel',
+    localField: '_id',
+    foreignField: 'user',
+});
 
 module.exports = mongoose.model('User', UserSchema)

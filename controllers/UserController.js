@@ -1,6 +1,10 @@
 const Model = require('../models/UserModel')
+const ChapelModel = require('../models/ChapelModel')
+const SubscriptionModel = require('../models/SubscriptionModel')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
+const moment = require('moment')
 
 const createToken = (_id) => {
     return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'})
@@ -48,11 +52,51 @@ const login = async (req, res) => {
 }
 
 const register = async (req, res) => {
-    const {email, firstName, lastName, middleName, address, phone, password, role, subcription} = req.body
+    const {email, firstName, lastName, middleName, address, phone, password, role, subscription, chapelName, chapelAddress, code} = req.body
     try {
-        const user = await Model.registerHash(email, firstName, lastName, middleName, address, phone, password, role, subcription)
+        const user = await Model.registerHash(email, firstName, lastName, middleName, address, phone, password, role, subscription)
         const token = createToken(user._id)
-        res.status(200).json({token, user: {_id: user._id, email: user.email, firstName: user.firstName, lastName: user.lastName, role: user.role, subcription: user.subcription}})
+        
+        if (role == 2) {
+            try {
+                await ChapelModel.create({
+                    user: user._id,
+                    chapel: chapelName,
+                    address: chapelAddress,
+                    code: code
+                })
+            } catch (error) {
+                res.status(400).json({error: error.message})
+            }
+        }
+        if (subscription == 1) {
+            try {
+                await SubscriptionModel.create({
+                    user: user._id,
+                    subscriptionPlan: subscription,
+                    startDate: moment(),
+                    endDate: moment().add(1, 'M'),
+                    amount: 100,
+                    status: true
+                })
+            } catch (error) {
+                res.status(400).json({error: error.message})
+            } 
+        } else {
+            try {
+                await SubscriptionModel.create({
+                    user: user._id,
+                    subscriptionPlan: subscription,
+                    startDate: moment(),
+                    endDate: moment().add(3, 'M'),
+                    amount: 0,
+                    status: true
+                })
+            } catch (error) {
+                res.status(400).json({error: error.message})
+            } 
+        }
+        res.status(200).json({token, user: {_id: user._id, email: user.email, firstName: user.firstName, lastName: user.lastName, role: user.role, subscription: user.subscription}})
     } catch (error) {
         res.status(400).json({error: error.message})
     }
@@ -77,14 +121,24 @@ const deleteData = async (req, res) => {
 
 //Update Data
 const updateData = async (req, res) => {
+    let newPassword
     const {id} = req.params
+    const {resetPassword, password} = req.body
+    if (resetPassword) {
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(resetPassword, salt)
+        newPassword = hash
+    } else {
+        newPassword = password
+    }
+
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: 'Not valid ID'})
     }
 
     const data = await Model.findOneAndUpdate({_id: id}, {
         ...req.body,
-        image: req.file ? req.file.filename : null
+        password: newPassword
     })
 
     if (!data) {
