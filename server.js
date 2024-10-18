@@ -3,6 +3,8 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const UserRoutes = require('./routes/user')
+const ChapelRoutes = require('./routes/chapel')
+const RequestRoutes = require('./routes/request')
 
 const port = process.env.PORT
 
@@ -23,6 +25,8 @@ app.use(express.json())
 
 // Routes
 app.use('/api/user', UserRoutes)
+app.use('/api/chapel', ChapelRoutes)
+app.use('/api/request', RequestRoutes)
 
 // Connect to db
 mongoose.connect(process.env.MONGO_URI)
