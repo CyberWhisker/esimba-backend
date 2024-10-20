@@ -66,7 +66,10 @@ UserSchema.statics.registerHash = async function(email, firstName, lastName, mid
 }
 
 UserSchema.statics.loginHash = async function(email, password) {
-    const user = await this.findOne({email})
+    const user = await this.findOne({email}).populate({
+        path: 'chapel',
+        model: 'Chapel',
+    })
 
     if(!user) {
         throw Error('Invalid Email')

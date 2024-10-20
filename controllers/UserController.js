@@ -45,6 +45,7 @@ const login = async (req, res) => {
                 firstName: data.firstName, 
                 lastName: data.lastName,
                 middleName: data.middleName,
+                parish: data.chapel,
                 role: data.role}})
     } catch (error) {
         res.status(400).json({error: error.message})
@@ -56,10 +57,9 @@ const register = async (req, res) => {
     try {
         const user = await Model.registerHash(email, firstName, lastName, middleName, address, phone, password, role, subscription)
         const token = createToken(user._id)
-        
         if (role == 2) {
             try {
-                await ChapelModel.create({
+                 await ChapelModel.create({
                     user: user._id,
                     chapel: chapelName,
                     address: chapelAddress,
@@ -96,7 +96,20 @@ const register = async (req, res) => {
                 res.status(400).json({error: error.message})
             } 
         }
-        res.status(200).json({token, user: {_id: user._id, email: user.email, firstName: user.firstName, lastName: user.lastName, role: user.role, subscription: user.subscription}})
+        const userData = await Model.findOne({_id: user._id}).populate({
+            path: 'chapel',
+            model: 'Chapel',
+        })
+        res.status(200).json({
+            token, 
+            user: { 
+                _id: userData._id, 
+                email: userData.email, 
+                firstName: userData.firstName, 
+                lastName: userData.lastName,
+                middleName: userData.middleName,
+                parish: userData.chapel,
+                role: userData.role}})
     } catch (error) {
         res.status(400).json({error: error.message})
     }
