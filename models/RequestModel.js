@@ -5,13 +5,23 @@ const Schema = mongoose.Schema
 const RequestSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     parish: {
         type: Schema.Types.ObjectId,
+        ref: 'Chapel',
         required: true,
     },
-    type : {
+    certificate : {
+        type: String,
+        required: true,
+    },
+    request : {
+        type: String,
+        required: true,
+    },
+    purpose : {
         type: String,
         required: true,
     },
@@ -27,6 +37,6 @@ const RequestSchema = new Schema({
         type: Object,
         required: true,
     },
-}, { timestamps: true})
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
 module.exports = mongoose.model('Request', RequestSchema)

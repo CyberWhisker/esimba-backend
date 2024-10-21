@@ -5,6 +5,7 @@ const Schema = mongoose.Schema
 const ChapelSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
+        ref:'User',
         required: true
     },
     chapel: {

@@ -5,6 +5,10 @@ const mongoose = require('mongoose')
 const UserRoutes = require('./routes/user')
 const ChapelRoutes = require('./routes/chapel')
 const RequestRoutes = require('./routes/request')
+const BaptismRoutes = require('./routes/baptism')
+const DeathRoutes = require('./routes/death')
+const MarriageRoutes = require('./routes/marriage')
+const ConfirmationRoutes = require('./routes/confirmation')
 
 const port = process.env.PORT
 
@@ -27,6 +31,10 @@ app.use(express.json())
 app.use('/api/user', UserRoutes)
 app.use('/api/chapel', ChapelRoutes)
 app.use('/api/request', RequestRoutes)
+app.use('/api/baptism', BaptismRoutes)
+app.use('/api/death', DeathRoutes)
+app.use('/api/marriage', MarriageRoutes)
+app.use('/api/confirmation', ConfirmationRoutes)
 
 // Connect to db
 mongoose.connect(process.env.MONGO_URI)

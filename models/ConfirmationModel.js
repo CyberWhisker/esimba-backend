@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const BaptismSchema = new Schema({
+const ConfirmationSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -42,4 +42,4 @@ const BaptismSchema = new Schema({
     },
 }, { timestamps: true})
 
-module.exports = mongoose.model('Baptism', BaptismSchema)
+module.exports = mongoose.model('Confirmation', ConfirmationSchema)

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const BaptismSchema = new Schema({
+const MarriageSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -19,10 +19,10 @@ const BaptismSchema = new Schema({
     birthAddress : {
         type: String,
     },
-    baptismDate : {
-        type: Date,
+    age : {
+        type: Number,
     },
-    baptismAddress : {
+    marriageDate : {
         type: String,
     },
     motherName : {
@@ -31,10 +31,13 @@ const BaptismSchema = new Schema({
     fatherName : {
         type: String,
     },
-    sponsor1 : {
+    partnerName : {
         type: String,
     },
-    sponsor2 : {
+    witness1 : {
+        type: String,
+    },
+    witness2 : {
         type: String,
     },
     priest : {
@@ -42,4 +45,4 @@ const BaptismSchema = new Schema({
     },
 }, { timestamps: true})
 
-module.exports = mongoose.model('Baptism', BaptismSchema)
+module.exports = mongoose.model('Marriage', MarriageSchema)

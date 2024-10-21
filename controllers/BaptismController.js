@@ -1,27 +1,9 @@
-const Model = require('../models/RequestModel')
+const Model = require('../models/BaptismModel')
 const mongoose = require('mongoose')
 
 const getData = async (req, res) => {
     try {
-        const data = await Model.find({}).populate('user').sort({createdAt: -1})
-        res.status(200).json(data)
-    } catch (error) {
-        res.status(400).json({error: error.message})
-    }
-} 
-
-const getAppointmentData = async (req, res) => {
-    try {
-        const data = await Model.find({request: 'Appointment'}).populate('user').sort({createdAt: -1})
-        res.status(200).json(data)
-    } catch (error) {
-        res.status(400).json({error: error.message})
-    }
-} 
-
-const getCertificateData = async (req, res) => {
-    try {
-        const data = await Model.find({request: 'Certificate'}).populate('user').sort({createdAt: -1})
+        const data = await Model.find({}).populate('user').populate('chapel').sort({createdAt: -1})
         res.status(200).json(data)
     } catch (error) {
         res.status(400).json({error: error.message})
@@ -29,10 +11,10 @@ const getCertificateData = async (req, res) => {
 } 
 
 const storeData = async (req, res) => {
-    const {user, parish, type} = req.body
-    const exist = await Model.findOne({user: user, parish: parish, type: type})
+    const {user} = req.body
+    const exist = await Model.findOne({user: user})
     if (exist) {
-        return res.status(400).json({error: "Request Exist"})
+        return res.status(400).json({error: "Data Exist"})
     }
     try {
         const data = await Model.create({...req.body})
@@ -74,7 +56,5 @@ module.exports = {
     getData,
     storeData,
     updateData,
-    deleteData,
-    getAppointmentData,
-    getCertificateData
+    deleteData
 }
