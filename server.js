@@ -9,6 +9,7 @@ const BaptismRoutes = require('./routes/baptism')
 const DeathRoutes = require('./routes/death')
 const MarriageRoutes = require('./routes/marriage')
 const ConfirmationRoutes = require('./routes/confirmation')
+const TransactionRoutes = require('./routes/transaction')
 
 const port = process.env.PORT
 
@@ -35,6 +36,7 @@ app.use('/api/baptism', BaptismRoutes)
 app.use('/api/death', DeathRoutes)
 app.use('/api/marriage', MarriageRoutes)
 app.use('/api/confirmation', ConfirmationRoutes)
+app.use('/api/transaction', TransactionRoutes)
 
 // Connect to db
 mongoose.connect(process.env.MONGO_URI)
