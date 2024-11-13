@@ -9,45 +9,45 @@ const UserSchema = new Schema({
         required: true,
         unique: true
     },
-    firstName : {
+    firstName: {
         type: String,
         required: true
     },
-    lastName : {
+    lastName: {
         type: String,
         required: true
     },
-    middleName : {
+    middleName: {
         type: String,
         required: true
     },
-    address : {
+    address: {
         type: String,
         required: true
     },
-    phone : {
+    phone: {
         type: Number,
         required: true
     },
-    image : {
+    image: {
         type: String
     },
-    role : {
+    role: {
         type: Number
-    }, 
+    },
     password: {
         type: String,
         required: true
     },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
-UserSchema.statics.registerHash = async function(email, firstName, lastName, middleName, address, phone, password, role) {
-    const exists = await this.findOne({email})
+UserSchema.statics.registerHash = async function (email, firstName, lastName, middleName, address, phone, password, role) {
+    const exists = await this.findOne({ email })
 
     if (exists) {
         throw Error('Email already in use')
     }
-    
+
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
 
@@ -65,13 +65,13 @@ UserSchema.statics.registerHash = async function(email, firstName, lastName, mid
     return user
 }
 
-UserSchema.statics.loginHash = async function(email, password) {
-    const user = await this.findOne({email}).populate({
+UserSchema.statics.loginHash = async function (email, password) {
+    const user = await this.findOne({ email }).populate({
         path: 'chapel',
         model: 'Chapel',
     })
 
-    if(!user) {
+    if (!user) {
         throw Error('Invalid Email')
     }
 
