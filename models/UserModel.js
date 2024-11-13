@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema
 
 const UserSchema = new Schema({
+    chapel: {
+        type: Schema.Types.ObjectId
+    },
     email: {
         type: String,
         required: true,
@@ -41,7 +44,8 @@ const UserSchema = new Schema({
     },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
-UserSchema.statics.registerHash = async function (email, firstName, lastName, middleName, address, phone, password, role) {
+UserSchema.statics.registerHash = async function (req) {
+    const {password, email} = req
     const exists = await this.findOne({ email })
 
     if (exists) {
@@ -52,16 +56,9 @@ UserSchema.statics.registerHash = async function (email, firstName, lastName, mi
     const hash = await bcrypt.hash(password, salt)
 
     const user = await this.create({
-        email,
-        firstName,
-        lastName,
-        address,
-        phone,
-        middleName,
-        role,
+        ...req,
         password: hash
     })
-
     return user
 }
 
@@ -83,12 +80,5 @@ UserSchema.statics.loginHash = async function (email, password) {
 
     return user
 }
-
-// Virtual field
-UserSchema.virtual('chapel', {
-    ref: 'Chapel',
-    localField: '_id',
-    foreignField: 'user',
-});
 
 module.exports = mongoose.model('User', UserSchema)
