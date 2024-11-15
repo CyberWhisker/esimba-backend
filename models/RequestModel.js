@@ -29,10 +29,6 @@ const RequestSchema = new Schema({
         type: String,
         required: true,
     },
-    active : {
-        type: Boolean,
-        default: true
-    },
     data : {
         type: Object,
         required: true,

@@ -29,8 +29,9 @@ const getCertificateData = async (req, res) => {
 } 
 
 const storeData = async (req, res) => {
-    const {user, parish, type} = req.body
-    const exist = await Model.findOne({user: user, parish: parish, type: type})
+    const {user, parish, certificate} = req.body
+    console.log(req.body)
+    const exist = await Model.findOne({user: user, parish: parish, certificate: certificate})
     if (exist) {
         return res.status(400).json({error: "Request Exist"})
     }

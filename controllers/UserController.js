@@ -62,8 +62,11 @@ const register = async (req, res) => {
         if (role == 2) {
             const chapelExist = await ChapelModel.findOne({ chapel: chapelName })
             const emailExist = await Model.findOne({ email: email })
-            if (chapelExist || emailExist) {
+            if (chapelExist) {
                 throw Error('Chapel already in use')
+            }
+            if (emailExist) {
+                throw Error('Email already in use')
             }
             const chapel = await ChapelModel.create({
                 chapel: chapelName,
