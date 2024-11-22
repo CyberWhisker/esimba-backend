@@ -13,6 +13,9 @@ const BaptismSchema = new Schema({
         ref: 'Chapel',
         required: true,
     },
+    name : {
+        type: String,
+    },
     birthDate : {
         type: Date,
     },
@@ -35,6 +38,9 @@ const BaptismSchema = new Schema({
         type: String,
     },
     sponsor2 : {
+        type: String,
+    },
+    purpose : {
         type: String,
     },
     priest : {

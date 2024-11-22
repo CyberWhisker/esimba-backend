@@ -12,10 +12,10 @@ const getData = async (req, res) => {
 
 const storeData = async (req, res) => {
     const {user} = req.body
-    const exist = await Model.findOne({user: user})
-    if (exist) {
-        return res.status(400).json({error: "Data Exist"})
-    }
+    // const exist = await Model.findOne({user: user})
+    // if (exist) {
+    //     return res.status(400).json({error: "Data Exist"})
+    // }
     try {
         const data = await Model.create({...req.body})
         res.status(200).json(data)

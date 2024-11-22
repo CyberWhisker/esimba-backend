@@ -13,45 +13,48 @@ const DeathSchema = new Schema({
         ref: 'Chapel',
         required: true,
     },
-    birthDate : {
-        type: Date,
-    },
-    birthAddress : {
+    name: {
         type: String,
     },
-    deathDate : {
+    birthDate: {
         type: Date,
     },
-    age : {
+    birthAddress: {
+        type: String,
+    },
+    deathDate: {
+        type: Date,
+    },
+    age: {
         type: Number,
     },
-    causeOfDeath : {
+    causeOfDeath: {
         type: String,
     },
-    burialDate : {
+    burialDate: {
         type: Date,
     },
-    motherName : {
+    motherName: {
         type: String,
     },
-    fatherName : {
+    fatherName: {
         type: String,
     },
-    partnerName : {
+    partnerName: {
         type: String,
     },
-    romanCemetary : {
+    romanCemetary: {
         type: String,
     },
-    municipalCemetary : {
+    municipalCemetary: {
         type: String,
     },
-    privateCemetary : {
+    privateCemetary: {
         type: String,
     },
-    priest : {
+    priest: {
         type: String,
     },
-}, { timestamps: true})
+}, { timestamps: true })
 
 module.exports = mongoose.model('Death', DeathSchema)

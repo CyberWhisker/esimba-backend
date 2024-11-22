@@ -13,36 +13,39 @@ const MarriageSchema = new Schema({
         ref: 'Chapel',
         required: true,
     },
-    birthDate : {
+    name: {
+        type: String,
+    },
+    birthDate: {
         type: Date,
     },
-    birthAddress : {
+    birthAddress: {
         type: String,
     },
-    age : {
+    age: {
         type: Number,
     },
-    marriageDate : {
+    marriageDate: {
         type: String,
     },
-    motherName : {
+    motherName: {
         type: String,
     },
-    fatherName : {
+    fatherName: {
         type: String,
     },
-    partnerName : {
+    partnerName: {
         type: String,
     },
-    witness1 : {
+    witness1: {
         type: String,
     },
-    witness2 : {
+    witness2: {
         type: String,
     },
-    priest : {
+    priest: {
         type: String,
     },
-}, { timestamps: true})
+}, { timestamps: true })
 
 module.exports = mongoose.model('Marriage', MarriageSchema)

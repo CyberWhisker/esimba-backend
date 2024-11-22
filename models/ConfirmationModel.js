@@ -13,6 +13,9 @@ const ConfirmationSchema = new Schema({
         ref: 'Chapel',
         required: true,
     },
+    name : {
+        type: String,
+    },
     birthDate : {
         type: Date,
     },
