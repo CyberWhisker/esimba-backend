@@ -11,6 +11,7 @@ const getData = async (req, res) => {
 } 
 
 const storeData = async (req, res) => {
+    console.log(req.file)
     try {
         const data = await Model.create({
             ...req.body,

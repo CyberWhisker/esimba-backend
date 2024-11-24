@@ -19,6 +19,16 @@ const getUsers = async (req, res) => {
     }
 }
 
+const getUsersByParishId = async (req, res) => {
+    const { id } = req.params
+    try {
+        const data = await Model.find({chapel: id}).sort({ createdAt: -1 })
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+}
+
 const getUserById = async (req, res) => {
     const { id } = req.params
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -181,4 +191,5 @@ module.exports = {
     getUserById,
     updateData,
     deleteData,
+    getUsersByParishId
 }

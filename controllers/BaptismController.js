@@ -10,6 +10,16 @@ const getData = async (req, res) => {
     }
 } 
 
+const getDataByUserId = async (req, res) => {
+    const {id} = req.params
+    try {
+        const data = await Model.find({user: id}).populate('user').populate('chapel').sort({createdAt: -1})
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
 const storeData = async (req, res) => {
     const {user} = req.body
     // const exist = await Model.findOne({user: user})
@@ -56,5 +66,6 @@ module.exports = {
     getData,
     storeData,
     updateData,
-    deleteData
+    deleteData,
+    getDataByUserId
 }

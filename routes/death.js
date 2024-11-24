@@ -1,9 +1,11 @@
 const express = require('express')
-const {getData, storeData, updateData, deleteData, } = require('../controllers/DeathController')
+const {getData, storeData, updateData, deleteData, getDataByUserId} = require('../controllers/DeathController')
 const router = express.Router();
 
 //Get Data
 router.get('/', getData)
+
+router.get('/getDataByUserId/:id', getDataByUserId)
 
 router.post('/', storeData)
 

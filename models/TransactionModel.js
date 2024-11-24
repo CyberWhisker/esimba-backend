@@ -11,7 +11,12 @@ const TransactionSchema = new Schema({
     request : {
         type: Schema.Types.ObjectId,
         ref: 'Request',
-        // required: true
+        required: true
+    },
+    chapel : {
+        type: Schema.Types.ObjectId,
+        ref: 'Chapel',
+        required: true
     },
     image : {
         type: String,
@@ -20,10 +25,10 @@ const TransactionSchema = new Schema({
         type: Number,
         required: true
     },
-    status : {
-        type: String,
-        required: true
-    },
+    // status : {
+    //     type: String,
+    //     required: true
+    // },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
 module.exports = mongoose.model('Transaction', TransactionSchema)

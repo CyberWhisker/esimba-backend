@@ -17,6 +17,9 @@ const RequestSchema = new Schema({
         type: String,
         required: true,
     },
+    schedule : {
+        type: Date,
+    },
     request : {
         type: String,
         required: true,
@@ -27,7 +30,7 @@ const RequestSchema = new Schema({
     },
     status : {
         type: String,
-        required: true,
+        default: "Pending",
     },
     data : {
         type: Object,
