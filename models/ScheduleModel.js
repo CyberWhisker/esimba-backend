@@ -16,6 +16,9 @@ const ScheduleSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Request',
     },
+    date: {
+        type: Date,
+    },
     release: {
         type: Boolean,
         default: false,

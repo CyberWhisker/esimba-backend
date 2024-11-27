@@ -22,7 +22,7 @@ const getUsers = async (req, res) => {
 const getUsersByParishId = async (req, res) => {
     const { id } = req.params
     try {
-        const data = await Model.find({chapel: id}).sort({ createdAt: -1 })
+        const data = await Model.find({ chapel: id }).sort({ createdAt: -1 })
         res.status(200).json(data)
     } catch (error) {
         res.status(400).json({ error: error.message })
@@ -65,46 +65,49 @@ const login = async (req, res) => {
 }
 
 const register = async (req, res) => {
-    const { role, subscription, chapelName, chapelAddress, code, email } = req.body
+    const { role, subscription, chapelName, chapelAddress, code, email, chapel } = req.body
     let chapelId;
     let newFormData = {};
     try {
-        if (role == 2) {
-            const chapelExist = await ChapelModel.findOne({ chapel: chapelName })
-            const emailExist = await Model.findOne({ email: email })
-            if (chapelExist) {
-                throw Error('Chapel already in use')
-            }
-            if (emailExist) {
-                throw Error('Email already in use')
-            }
-            const chapel = await ChapelModel.create({
-                chapel: chapelName,
-                address: chapelAddress,
-                code: code
-            })
-            chapelId = chapel._id
-            if (subscription == 1) {
-                await SubscriptionModel.create({
-                    chapel: chapel._id,
-                    subscriptionPlan: subscription,
-                    startDate: moment(),
-                    endDate: moment().add(1, 'M'),
-                    amount: 100,
-                    status: true
+        if (!chapel) {
+            if (role == 2) {
+                const chapelExist = await ChapelModel.findOne({ chapel: chapelName })
+                const emailExist = await Model.findOne({ email: email })
+                if (chapelExist) {
+                    throw Error('Chapel already in use')
+                }
+                if (emailExist) {
+                    throw Error('Email already in use')
+                }
+                const chapel = await ChapelModel.create({
+                    chapel: chapelName,
+                    address: chapelAddress,
+                    code: code
                 })
-            }
-            if (subscription == 2) {
-                await SubscriptionModel.create({
-                    chapel: chapel._id,
-                    subscriptionPlan: subscription,
-                    startDate: moment(),
-                    endDate: moment().add(3, 'M'),
-                    amount: 0,
-                    status: true
-                })
+                chapelId = chapel._id
+                if (subscription == 1) {
+                    await SubscriptionModel.create({
+                        chapel: chapel._id,
+                        subscriptionPlan: subscription,
+                        startDate: moment(),
+                        endDate: moment().add(1, 'M'),
+                        amount: 100,
+                        status: true
+                    })
+                }
+                if (subscription == 2) {
+                    await SubscriptionModel.create({
+                        chapel: chapel._id,
+                        subscriptionPlan: subscription,
+                        startDate: moment(),
+                        endDate: moment().add(3, 'M'),
+                        amount: 0,
+                        status: true
+                    })
+                }
             }
         }
+
         if (chapelId) {
             newFormData = {
                 ...req.body,
