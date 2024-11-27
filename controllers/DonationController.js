@@ -1,4 +1,4 @@
-const Model = require('../models/TransactionModel')
+const Model = require('../models/DonationModel')
 const mongoose = require('mongoose')
 
 const getData = async (req, res) => {
@@ -10,22 +10,11 @@ const getData = async (req, res) => {
     }
 }
 
-const getDataByRequestId = async (req, res) => {
-    const { id } = req.params
-    try {
-        const data = await Model.find({ request: id }).sort({ createdAt: -1 })
-        res.status(200).json(data)
-    } catch (error) {
-        res.status(400).json({ error: error.message })
-    }
-}
-
 const getDataByChapelId = async (req, res) => {
     const { id } = req.params
     try {
         const data = await Model.find({ chapel: id })
             .populate('user')
-            .populate('request')
             .sort({ createdAt: -1 })
         res.status(200).json(data)
     } catch (error) {
@@ -34,6 +23,7 @@ const getDataByChapelId = async (req, res) => {
 }
 
 const storeData = async (req, res) => {
+    console.log(req.file)
     try {
         const data = await Model.create({
             ...req.body,
@@ -78,6 +68,5 @@ module.exports = {
     storeData,
     updateData,
     deleteData,
-    getDataByRequestId,
     getDataByChapelId
 }
