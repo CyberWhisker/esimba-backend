@@ -19,6 +19,14 @@ const ScheduleSchema = new Schema({
     date: {
         type: Date,
     },
+    startTime: {
+        type: Date,
+        required: true
+    },
+    endTime: {
+        type: Date,
+        required: true
+    },
     release: {
         type: Boolean,
         default: false,
