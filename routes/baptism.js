@@ -1,11 +1,13 @@
 const express = require('express')
-const {getData, storeData, updateData, deleteData, getDataByUserId, } = require('../controllers/BaptismController')
+const {getData, storeData, updateData, deleteData, getDataByUserId, getDataByChapelId} = require('../controllers/BaptismController')
 const router = express.Router();
 
 //Get Data
 router.get('/', getData)
 
 router.get('/getDataByUserId/:id', getDataByUserId)
+
+router.get('/getDataByChapelId/:id', getDataByChapelId)
 
 router.post('/', storeData)
 

@@ -1,9 +1,11 @@
 const express = require('express')
-const {getData, storeData, updateData, deleteData, getDataByUserId} = require('../controllers/ConfirmationController')
+const {getData, storeData, updateData, deleteData, getDataByUserId, getDataByChapelId} = require('../controllers/ConfirmationController')
 const router = express.Router();
 
 //Get Data
 router.get('/', getData)
+
+router.get('/getDataByChapelId/:id', getDataByChapelId)
 
 router.get('/getDataByUserId/:id', getDataByUserId)
 
