@@ -90,7 +90,7 @@ const register = async (req, res) => {
                         chapel: chapel._id,
                         subscriptionPlan: subscription,
                         startDate: moment(),
-                        endDate: moment().add(1, 'M'),
+                        endDate: moment().add(1, 'Y'),
                         amount: 100,
                         status: true
                     })
@@ -162,6 +162,7 @@ const deleteData = async (req, res) => {
 const updateData = async (req, res) => {
     let newPassword
     const { id } = req.params
+    console.log(id)
     const { resetPassword, password } = req.body
     if (resetPassword) {
         const salt = await bcrypt.genSalt(10)

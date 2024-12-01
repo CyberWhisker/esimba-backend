@@ -12,21 +12,27 @@ const SubscriptionSchema = new Schema({
         type: Number,
         required: true
     },
-    startDate : {
+    startDate: {
         type: Date,
         required: true
     },
-    endDate : {
+    endDate: {
         type: Date,
         required: true
     },
-    amount : {
+    amount: {
         type: Number,
     },
-    status : {
+    status: {
         type: Boolean,
         required: true
+    },
+    request: {
+        type: String,
+    },
+    image: {
+        type: String,
     }
-}, { timestamps: true})
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
 module.exports = mongoose.model('Subscription', SubscriptionSchema)

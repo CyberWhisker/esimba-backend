@@ -15,6 +15,9 @@ const ChapelSchema = new Schema({
         type: Number,
         required: true
     },
+    gcash : {
+        type: Number,
+    },
 }, { timestamps: true})
 
 module.exports = mongoose.model('Chapel', ChapelSchema)

@@ -12,6 +12,7 @@ const ConfirmationRoutes = require('./routes/confirmation')
 const TransactionRoutes = require('./routes/transaction')
 const ScheduleRoutes = require('./routes/schedule')
 const DonationRoutes = require('./routes/donation')
+const SubscriptionRoutes = require('./routes/subscription')
 
 const port = process.env.PORT
 
@@ -41,6 +42,7 @@ app.use('/api/confirmation', ConfirmationRoutes)
 app.use('/api/transaction', TransactionRoutes)
 app.use('/api/schedule', ScheduleRoutes)
 app.use('/api/donation', DonationRoutes)
+app.use('/api/subscription', SubscriptionRoutes)
 
 // Connect to db
 mongoose.connect(process.env.MONGO_URI)
