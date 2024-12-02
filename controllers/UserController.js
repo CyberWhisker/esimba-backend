@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const moment = require('moment')
+const sendVerificationEmail = require('../utils/sendVerificationEmail');
 
 const createToken = (_id) => {
     return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '3d' })
@@ -124,8 +125,15 @@ const register = async (req, res) => {
             path: 'chapel',
             model: 'Chapel',
         })
+
+        // Generate a verification token
+        const verificationToken = jwt.sign({ userId: user._id }, process.env.SECRET, { expiresIn: '1d' });
+        // Send verification email
+        await sendVerificationEmail(email, user._id, verificationToken);
+
         res.status(200).json({
             token,
+            message: 'User registered successfully. Please check your email to verify your account.',
             user: {
                 _id: userData._id,
                 email: userData.email,
@@ -188,6 +196,89 @@ const updateData = async (req, res) => {
     res.status(200).json(req.body)
 }
 
+const verifyEmail = async (req, res) => {
+    const { token, userId } = req.query;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ error: 'Invalid user ID.' });
+    }
+
+    try {
+        // Verify the token
+        const decoded = jwt.verify(token, process.env.SECRET);
+
+        if (decoded.userId !== userId) {
+            throw new Error('Invalid token or user ID.');
+        }
+
+        // Update user to verified
+        const user = await Model.findByIdAndUpdate(userId, { verified: true }, { new: true });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        res.status(200).json({ message: 'Email successfully verified!' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const sendPasswordResetEmail = async (email, token) => {
+    const resetLink = `${process.env.CLIENT_URL}/reset-password?token=${token}`;
+    const mailOptions = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: 'Reset Your Password',
+        html: `
+            <h1>Password Reset Request</h1>
+            <p>We received a request to reset your password. Click the link below to reset it:</p>
+            <a href="${resetLink}" style="color: blue; text-decoration: underline;">Reset Password</a>
+            <p>If you didn't request this, please ignore this email.</p>
+        `,
+    };
+
+    await transporter.sendMail(mailOptions);
+};
+
+const requestResetPassword = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await Model.findOne({ email });
+        if (!user) throw new Error('Email not found.');
+
+        const token = jwt.sign({ userId: user._id }, process.env.SECRET, { expiresIn: '1h' });
+        await sendPasswordResetEmail(email, token);
+
+        res.status(200).json({ message: 'Reset email sent.' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const confirmResetPassword = async (req, res) => {
+    const { token, newPassword } = req.body;
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET);
+        const user = await Model.findById(decoded.userId);
+
+        if (!user) throw new Error('Invalid token.');
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        user.password = hashedPassword;
+        await user.save();
+
+        res.status(200).json({ message: 'Password reset successful.' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+
 module.exports = {
     login,
     register,
@@ -195,5 +286,8 @@ module.exports = {
     getUserById,
     updateData,
     deleteData,
-    getUsersByParishId
+    getUsersByParishId,
+    verifyEmail, 
+    requestResetPassword, 
+    confirmResetPassword
 }

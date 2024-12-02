@@ -42,6 +42,10 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    verified: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
 UserSchema.statics.registerHash = async function (req) {

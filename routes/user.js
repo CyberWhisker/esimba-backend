@@ -1,27 +1,47 @@
-const express = require('express')
-const multer  = require('multer')
-const {login, register, getUsers, getUserById, deleteData, updateData, getUsersByParishId} = require('../controllers/UserController')
+const express = require('express');
+const {
+    login,
+    register,
+    getUsers,
+    getUserById,
+    deleteData,
+    updateData,
+    getUsersByParishId,
+    verifyEmail,
+    requestResetPassword,
+    confirmResetPassword
+} = require('../controllers/UserController');
+
 const router = express.Router();
 
-//User Login
-router.post('/login', login)
+// User Login
+router.post('/login', login);
 
-//User Registration
-router.post('/register', register)
+// Request reset password
+router.post('/request-reset-password', requestResetPassword);
 
-//Get All Users
-router.get('/', getUsers)
+// Confirm reset password
+router.post('/confirm-reset-password', confirmResetPassword);
 
-//Get User
-router.get('/getUsersByParishId/:id', getUsersByParishId)
+// User Registration
+router.post('/register', register);
 
-//Get User
-router.get('/:id', getUserById)
+// Verify Email
+router.get('/verify', verifyEmail);
 
-//Delete User
-router.delete('/:id', deleteData)
+// Get All Users
+router.get('/', getUsers);
 
-//Update User
-router.patch('/:id', updateData)
+// Get User by Parish ID
+router.get('/getUsersByParishId/:id', getUsersByParishId);
 
-module.exports = router
+// Get Single User by ID
+router.get('/:id', getUserById);
+
+// Delete User
+router.delete('/:id', deleteData);
+
+// Update User
+router.patch('/:id', updateData);
+
+module.exports = router;
