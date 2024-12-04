@@ -10,6 +10,12 @@ const EventSchema = new Schema({
     event: {
         type: String,
     },
+    event_type: {
+        type: String,
+    },
+    slot: {
+        type: Number,
+    },
     startDate: {
         type: Date,
         required: true

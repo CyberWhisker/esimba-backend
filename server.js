@@ -15,6 +15,7 @@ const DonationRoutes = require('./routes/donation')
 const SubscriptionRoutes = require('./routes/subscription')
 const EventRoutes = require('./routes/event')
 const AddressRoutes = require('./routes/address')
+const ReservedRoutes = require('./routes/reserved')
 
 const port = process.env.PORT
 
@@ -47,6 +48,7 @@ app.use('/api/donation', DonationRoutes)
 app.use('/api/subscription', SubscriptionRoutes)
 app.use('/api/event', EventRoutes)
 app.use('/api/address', AddressRoutes)
+app.use('/api/reserved', ReservedRoutes)
 
 // Connect to db
 mongoose.connect(process.env.MONGO_URI)

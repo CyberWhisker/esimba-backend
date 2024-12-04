@@ -55,6 +55,10 @@ const DeathSchema = new Schema({
     priest: {
         type: String,
     },
+    status: {
+        type: String,
+        default: 'Hold'
+    }
 }, { timestamps: true })
 
 module.exports = mongoose.model('Death', DeathSchema)

@@ -8,20 +8,20 @@ const TransactionSchema = new Schema({
         ref: 'User',
         required: true
     },
-    request : {
-        type: Schema.Types.ObjectId,
-        ref: 'Request',
-        required: true
-    },
-    chapel : {
+    // request : {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'Request',
+    //     required: true
+    // },
+    chapel: {
         type: Schema.Types.ObjectId,
         ref: 'Chapel',
         required: true
     },
-    image : {
+    image: {
         type: String,
     },
-    amount : {
+    amount: {
         type: Number,
         required: true
     },

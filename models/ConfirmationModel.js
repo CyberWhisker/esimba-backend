@@ -13,36 +13,40 @@ const ConfirmationSchema = new Schema({
         ref: 'Chapel',
         required: true,
     },
-    name : {
+    name: {
         type: String,
     },
-    birthDate : {
+    birthDate: {
         type: Date,
     },
-    birthAddress : {
+    birthAddress: {
         type: String,
     },
-    baptismDate : {
+    baptismDate: {
         type: Date,
     },
-    baptismAddress : {
+    baptismAddress: {
         type: String,
     },
-    motherName : {
+    motherName: {
         type: String,
     },
-    fatherName : {
+    fatherName: {
         type: String,
     },
-    sponsor1 : {
+    sponsor1: {
         type: String,
     },
-    sponsor2 : {
+    sponsor2: {
         type: String,
     },
-    priest : {
+    priest: {
         type: String,
     },
-}, { timestamps: true})
+    status: {
+        type: String,
+        default: 'Hold'
+    }
+}, { timestamps: true })
 
 module.exports = mongoose.model('Confirmation', ConfirmationSchema)
