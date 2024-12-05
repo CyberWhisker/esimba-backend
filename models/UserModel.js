@@ -41,7 +41,7 @@ const UserSchema = new Schema({
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
 UserSchema.statics.registerHash = async function (req) {
-    const {password, email} = req
+    const { password, email } = req
     const exists = await this.findOne({ email })
 
     if (exists) {

@@ -16,6 +16,8 @@ const SubscriptionRoutes = require('./routes/subscription')
 const EventRoutes = require('./routes/event')
 const AddressRoutes = require('./routes/address')
 const ReservedRoutes = require('./routes/reserved')
+const PriestRoutes = require('./routes/priest')
+const PriestScheduleRoutes = require('./routes/priestSchedule')
 
 const port = process.env.PORT
 
@@ -49,6 +51,8 @@ app.use('/api/subscription', SubscriptionRoutes)
 app.use('/api/event', EventRoutes)
 app.use('/api/address', AddressRoutes)
 app.use('/api/reserved', ReservedRoutes)
+app.use('/api/priest', PriestRoutes)
+app.use('/api/priestSchedule', PriestScheduleRoutes)
 
 // Connect to db
 mongoose.connect(process.env.MONGO_URI)
