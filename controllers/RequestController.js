@@ -58,6 +58,19 @@ const getCertificateByParishId = async (req, res) => {
     }
 }
 
+const getDataByParishId = async (req, res) => {
+    const { id } = req.params
+    try {
+        const data = await Model.find({ parish: id })
+            .populate('user')
+            .populate('transaction')
+            .sort({ createdAt: -1 })
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+}
+
 const storeData = async (req, res) => {
     // const {user, parish, certificate} = req.body
     // const exist = await Model.findOne({user: user, parish: parish, certificate: certificate})
@@ -109,5 +122,6 @@ module.exports = {
     getCertificateData,
     getAppointmentByParishId,
     getCertificateByParishId,
-    getDataByUserId
+    getDataByUserId,
+    getDataByParishId
 }

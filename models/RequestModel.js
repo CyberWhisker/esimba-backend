@@ -13,28 +13,18 @@ const RequestSchema = new Schema({
         ref: 'Chapel',
         required: true,
     },
-    certificate : {
+    transaction: {
+        type: Schema.Types.ObjectId,
+        ref: 'Transaction',
+        required: true
+    },
+    certificate: {
         type: String,
         required: true,
     },
-    schedule : {
-        type: Date,
-    },
-    request : {
-        type: String,
-        required: true,
-    },
-    purpose : {
-        type: String,
-        required: true,
-    },
-    status : {
+    status: {
         type: String,
         default: "Pending",
-    },
-    data : {
-        type: Object,
-        required: true,
     },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 

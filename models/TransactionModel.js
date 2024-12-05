@@ -31,4 +31,20 @@ const TransactionSchema = new Schema({
     // },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
+// Virtual field for attendances
+TransactionSchema.virtual('request', {
+    ref: 'Request',
+    localField: '_id',
+    foreignField: 'transaction',
+    justOne: true,
+});
+
+// Virtual field for attendances
+TransactionSchema.virtual('reserved', {
+    ref: 'Reserved',
+    localField: '_id',
+    foreignField: 'transaction',
+    justOne: true,
+});
+
 module.exports = mongoose.model('Transaction', TransactionSchema)

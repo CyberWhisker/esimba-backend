@@ -47,6 +47,9 @@ const getDataByParishId = async (req, res) => {
     const { id } = req.params
     try {
         const data = await Model.find({ parish: id })
+            .populate("user")
+            .populate("event")
+            .populate("transaction")
             .sort({ createdAt: -1 })
         res.status(200).json(data)
     } catch (error) {

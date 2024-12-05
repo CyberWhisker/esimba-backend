@@ -13,6 +13,11 @@ const ReservedSchema = new Schema({
         ref: 'Transaction',
         required: true
     },
+    parish: {
+        type: Schema.Types.ObjectId,
+        ref: 'Chapel',
+        required: true
+    },
     event: {
         type: Schema.Types.ObjectId,
         ref: 'Event',

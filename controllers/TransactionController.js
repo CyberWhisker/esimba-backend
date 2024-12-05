@@ -25,7 +25,14 @@ const getDataByChapelId = async (req, res) => {
     try {
         const data = await Model.find({ chapel: id })
             .populate('user')
-            .populate('request')
+            .populate({
+                path: 'reserved',
+                model: 'Reserved',
+            })
+            .populate({
+                path: 'request',
+                model: 'Request'
+            })
             .sort({ createdAt: -1 })
         res.status(200).json(data)
     } catch (error) {
