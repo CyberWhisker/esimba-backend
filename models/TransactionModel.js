@@ -8,15 +8,16 @@ const TransactionSchema = new Schema({
         ref: 'User',
         required: true
     },
-    // request : {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Request',
-    //     required: true
-    // },
+    item: {
+        type: Schema.Types.ObjectId,
+    },
     chapel: {
         type: Schema.Types.ObjectId,
         ref: 'Chapel',
         required: true
+    },
+    item_type: {
+        type: String
     },
     image: {
         type: String,
@@ -25,10 +26,10 @@ const TransactionSchema = new Schema({
         type: Number,
         required: true
     },
-    // status : {
-    //     type: String,
-    //     required: true
-    // },
+    status: {
+        type: String,
+        default: 'Pending'
+    },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
 // Virtual field for attendances

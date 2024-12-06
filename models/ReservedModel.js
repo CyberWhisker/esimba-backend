@@ -8,11 +8,11 @@ const ReservedSchema = new Schema({
         ref: 'User',
         required: true
     },
-    transaction: {
-        type: Schema.Types.ObjectId,
-        ref: 'Transaction',
-        required: true
-    },
+    // transaction: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'Transaction',
+    //     required: true
+    // },
     parish: {
         type: Schema.Types.ObjectId,
         ref: 'Chapel',
@@ -26,10 +26,21 @@ const ReservedSchema = new Schema({
     date: {
         type: Date,
     },
+    amount: {
+        type: Number,
+    },
     status: {
         type: String,
         default: 'Pending',
     },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
+
+// Virtual field for attendances
+ReservedSchema.virtual('transaction', {
+    ref: 'Transaction',
+    localField: '_id',
+    foreignField: 'item',
+    justOne: true,
+});
 
 module.exports = mongoose.model('Reserved', ReservedSchema)

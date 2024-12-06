@@ -18,6 +18,10 @@ const RequestSchema = new Schema({
         ref: 'Transaction',
         required: true
     },
+    certificateId: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
     certificate: {
         type: String,
         required: true,

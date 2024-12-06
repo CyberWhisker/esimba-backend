@@ -1,4 +1,4 @@
-const Model = require('../models/ReservedModel')
+const Model = require('../models/PriceModel')
 const mongoose = require('mongoose')
 
 const getData = async (req, res) => {
@@ -10,51 +10,20 @@ const getData = async (req, res) => {
     }
 }
 
-const getDataByUserId = async (req, res) => {
-    const { id } = req.params
-    try {
-        const data = await Model.find({ user: id })
-            .populate('event')
-            .populate({
-                path: 'transaction',
-                model: 'Transaction',
-            })
-            .sort({ createdAt: -1 })
-        res.status(200).json(data)
-    } catch (error) {
-        res.status(400).json({ error: error.message })
-    }
-}
-
-const getDataByEventId = async (req, res) => {
-    const { id } = req.params
-    try {
-        const data = await Model.find({ event: id }).populate('user')
-            .sort({ createdAt: -1 })
-        res.status(200).json(data)
-    } catch (error) {
-        res.status(400).json({ error: error.message })
-    }
-}
-
 const getDataById = async (req, res) => {
     const { id } = req.params
     try {
-        const data = await Model.findById({ id })
-            .sort({ createdAt: -1 })
+        const data = await Model.find({ _id: id }).sort({ createdAt: -1 })
         res.status(200).json(data)
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
 }
 
-const getDataByParishId = async (req, res) => {
-    const { id } = req.params
+const getDataByItem = async (req, res) => {
+    const { item } = req.params
     try {
-        const data = await Model.find({ parish: id })
-            .populate("user")
-            .populate("event")
-            .sort({ createdAt: -1 })
+        const data = await Model.find({ item: item }).sort({ createdAt: -1 })
         res.status(200).json(data)
     } catch (error) {
         res.status(400).json({ error: error.message })
@@ -100,11 +69,9 @@ const deleteData = async (req, res) => {
 
 module.exports = {
     getData,
+    getDataById,
+    getDataByItem,
     storeData,
     updateData,
     deleteData,
-    getDataByParishId,
-    getDataByUserId,
-    getDataById,
-    getDataByEventId
 }
