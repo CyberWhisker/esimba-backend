@@ -3,16 +3,17 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const PriceSchema = new Schema({
-    item: {
+    type: {
+        type: String,
         required: true,
     },
-    amount: {
+    name: {
+        type: String,
+        required: true,
+    },
+    price: {
         type: Number,
         required: true,
-    },
-    status: {
-        type: Boolean,
-        default: true,
     }
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 

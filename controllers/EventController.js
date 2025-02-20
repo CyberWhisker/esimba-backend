@@ -4,7 +4,7 @@ const moment = require('moment');
 
 const getData = async (req, res) => {
     try {
-        const data = await Model.find({}).sort({ createdAt: -1 })
+        const data = await Model.find({}).populate('parish').sort({ createdAt: -1 })
         res.status(200).json(data)
     } catch (error) {
         res.status(400).json({ error: error.message })

@@ -16,6 +16,10 @@ const EventSchema = new Schema({
     slot: {
         type: Number,
     },
+    status: {
+        type: String,
+        default: "Pending"
+    },
     startDate: {
         type: Date,
         required: true

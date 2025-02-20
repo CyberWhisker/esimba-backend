@@ -32,12 +32,43 @@ const getDataByItem = async (req, res) => {
 
 const storeData = async (req, res) => {
     try {
-        const data = await Model.create({ ...req.body })
-        res.status(200).json(data)
+        const requestData = req.body; // Incoming data
+
+        let operations = [];
+
+        // Loop through each category (e.g., marriage, baptismal, burial)
+        for (const type in requestData) {
+            if (Array.isArray(requestData[type])) {
+                for (const item of requestData[type]) {
+                    const { name, price } = item;
+
+                    // Convert price to number
+                    const priceValue = parseFloat(price);
+
+                    // Update if name exists, otherwise insert a new record
+                    operations.push(
+                        Model.findOneAndUpdate(
+                            { type, name }, // Find by type and name
+                            { price: priceValue }, // Update price
+                            { upsert: true, new: true } // Create if not exists
+                        )
+                    );
+                }
+            }
+        }
+
+        // Execute all operations in parallel
+        const results = await Promise.all(operations);
+
+        res.status(200).json({
+            message: "Prices updated successfully",
+            data: results
+        });
     } catch (error) {
-        res.status(400).json({ error: error.message })
+        res.status(500).json({ error: error.message });
     }
-}
+};
+
 
 const updateData = async (req, res) => {
     const { id } = req.params
