@@ -4,7 +4,12 @@ const moment = require('moment');
 
 const getData = async (req, res) => {
     try {
-        const data = await Model.find({}).populate('parish').sort({ createdAt: -1 })
+        const data = await Model.find({})
+            .populate('parish')
+            .populate({
+                path: 'priest',
+                model: 'Priest'
+            }).sort({ createdAt: -1 })
         res.status(200).json(data)
     } catch (error) {
         res.status(400).json({ error: error.message })
@@ -27,7 +32,10 @@ const getDataById = async (req, res) => {
 const getDataByParishId = async (req, res) => {
     const { id } = req.params
     try {
-        const data = await Model.find({ parish: id })
+        const data = await Model.find({ parish: id }).populate({
+            path: 'priest',
+            model: 'Priest'
+        })
             .sort({ createdAt: -1 })
         res.status(200).json(data)
     } catch (error) {

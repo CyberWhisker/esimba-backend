@@ -11,6 +11,13 @@ const PriestSchema = new Schema({
     name: {
         type: String,
         required: true,
+    },
+    position: {
+        type: String,
+        required: true,
+    },
+    image: {
+        type: String,
     }
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 

@@ -13,7 +13,7 @@ const getData = async (req, res) => {
 const getDataByParishId = async (req, res) => {
     const { id } = req.params
     try {
-        const data = await Model.find({ parish: id }).populate('priest').sort({ createdAt: -1 })
+        const data = await Model.findOne({ parish: id }).sort({ createdAt: -1 })
         res.status(200).json(data)
     } catch (error) {
         res.status(400).json({ error: error.message })
@@ -21,8 +21,12 @@ const getDataByParishId = async (req, res) => {
 }
 
 const storeData = async (req, res) => {
+    console.log(req.file)
     try {
-        const data = await Model.create({ ...req.body })
+        const data = await Model.create({
+            ...req.body,
+            image: req.file ? req.file.filename : null
+        })
         res.status(200).json(data)
     } catch (error) {
         res.status(400).json({ error: error.message })
@@ -35,8 +39,9 @@ const updateData = async (req, res) => {
         return res.status(404).json({ error: 'Not valid ID' })
     }
     try {
-        const data = await Model.findOneAndUpdate({ _id: id }, {
-            ...req.body
+        const data = await Model.findOneAndUpdate({ parish: id }, {
+            ...req.body,
+            image: req.file ? req.file.filename : null
         })
         res.status(200).json(data)
     } catch (error) {

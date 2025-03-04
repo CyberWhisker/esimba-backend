@@ -30,4 +30,13 @@ const EventSchema = new Schema({
     },
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } })
 
+
+// Virtual field for attendances
+EventSchema.virtual('priest', {
+    ref: 'Priest',
+    localField: 'parish',
+    foreignField: 'parish',
+    justOne: true,
+});
+
 module.exports = mongoose.model('Event', EventSchema)
